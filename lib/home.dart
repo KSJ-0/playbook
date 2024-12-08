@@ -120,18 +120,19 @@ class _MyHomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(12.0),
                     color: const Color.fromARGB(255, 4, 0, 113),
                   ),
-                child: TextButton( //새 일기 작성 버튼
-                  child: const Text(
-                    "+",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
+                  child: TextButton( //새 일기 작성 버튼
+                    child: const Text(
+                      "+",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35.0,
+                      ),
                     ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/diary");
+                    },                  
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/diary");
-                  },                  
-                ),),
+                ),
               ),
             ],)
             ]
