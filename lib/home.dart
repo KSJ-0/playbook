@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Playbook',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 255, 255, 255)),
-        useMaterial3: true,
-      ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+import 'package:playbook/diary.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -53,7 +38,7 @@ class _MyHomePageState extends State<HomePage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12.0)
                   ),
-                  child: DropdownButton(
+                  child: DropdownButton( //팀 선택 버튼
                     dropdownColor: Colors.white,
                     value: _selectedTeam,
                     items: _teams.map((e) => DropdownMenuItem(
@@ -78,43 +63,7 @@ class _MyHomePageState extends State<HomePage> {
         child: 
         Column( //수직 배열
           children: <Widget>[
-        //     Container(
-        //       color : const Color.fromARGB(255, 2, 0, 98),
-        //       padding: EdgeInsets.symmetric(vertical: 20.0), 
-        //       child :
-        //     Row( //수평 배열
-        //     children: <Widget>[
-        //       // Container(
-        //       //   color: const Color.fromARGB(255, 255, 255, 255),
-        //       //   padding: EdgeInsets.symmetric(horizontal: 10.0),
-        //       //   child :
-        //         Spacer(), //오른쪽 끝으로
-        //         Container(
-        //           padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
-        //           decoration: BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.circular(12.0)
-        //           ),
-        //           child: DropdownButton(
-        //             dropdownColor: Colors.white,
-        //             value: _selectedTeam,
-        //             items: _teams.map((e) => DropdownMenuItem(
-        //                   value: e,
-        //                   child: Text(e),
-        //                 ))
-        //             .toList(),
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 _selectedTeam = value!;
-        //               });
-        //             }
-        //           ),
-        //         )
-        //     // )
-        //     ],
-        //     ),
-        //     ),
-            SizedBox(height: 22.0),
+            const SizedBox(height: 22.0),
             Row(
               children: [
                 Image.asset(
@@ -124,39 +73,68 @@ class _MyHomePageState extends State<HomePage> {
                 ),
               ] 
             ),
-            SizedBox(height: 22.0),
-            Expanded(
-              child: ListView(
-                children: List.generate(5, (number) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 11.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("   VICTORY🏆", style: TextStyle(fontSize: 17.0),),
-                        SizedBox(height: 5.0),
-                        TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width - 32,
-                            child: Text(
-                              "Title",
-                              style: TextStyle(color: Colors.black, fontSize: 25.0),
-                            )
-                          )  
-                        )
-                      ]
-                    )  
-                    );
-                }),
-              ) ,
-            ),
+            const SizedBox(height: 22.0),
+            Stack(children: [ //리스트 위에 버튼을 배치하기 위한 스택
+              Container( //일기 리스트를 담기 위한 컨테이너
+                height: MediaQuery.of(context).size.height - 400,
+                child: ListView( //일기 리스트
+                  children: List.generate(5, (number) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 11.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [ //승패 여부
+                          const Text("   VICTORY🏆", style: TextStyle(fontSize: 17.0),),
+                          const SizedBox(height: 5.0),
+                          TextButton( //목록
+                            onPressed: () {                  
+                              
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 32,
+                              child: const Text(
+                                "Title",
+                                style: TextStyle(color: Colors.black, fontSize: 25.0),
+                              )
+                            )  
+                          )
+                        ]
+                      )  
+                      );
+                  }),
+                ) ,
+              ),
+              Positioned( //리스트 위에 버튼 배치
+                bottom: 10.0, 
+                right: 10.0,  
+                child: Container( //버튼 담을 컨테이너
+                  width: 60.0,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: const Color.fromARGB(255, 4, 0, 113),
+                  ),
+                  child: TextButton( //새 일기 작성 버튼
+                    child: const Text(
+                      "+",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35.0,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/diary");
+                    },                  
+                  ),
+                ),
+              ),
+            ],)
             ]
         ),    
       )
