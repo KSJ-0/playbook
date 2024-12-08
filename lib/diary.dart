@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 
@@ -11,6 +12,11 @@ class DiaryPage extends StatefulWidget {
 }
 
 class _MyDiaryPageState extends State<DiaryPage> {
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+
+  String docId = '';
 
   void initState() {
     super.initState();
@@ -18,6 +24,27 @@ class _MyDiaryPageState extends State<DiaryPage> {
     });
   }
 
+  Future<void> uploadData() async {
+    try { //일기 제목, 내용 저장
+      DocumentReference doc = await FirebaseFirestore.instance.collection('diary').add({
+        'title': _titleController.text,
+        'content': _contentController.text,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+      docId = doc.id;
+    } catch(e) {
+    print("저장 실패: $e");
+
+    }
+    try { //생성한 일기 문서 ID 저장
+      await FirebaseFirestore.instance.collection('user').doc('1').update({
+        'diary_array': FieldValue.arrayUnion([docId])
+      });
+    } catch(e) {
+    print("저장 실패: $e");
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +52,9 @@ class _MyDiaryPageState extends State<DiaryPage> {
         backgroundColor: const Color.fromARGB(255, 4, 0, 113),
         leading : 
           IconButton( //저장 버튼
-            onPressed: () {},
+            onPressed: () {
+              uploadData();
+            },
             icon : const Icon(Icons.save),
             color : Colors.white
           ),
@@ -40,6 +69,7 @@ class _MyDiaryPageState extends State<DiaryPage> {
                 color: Colors.white, 
               ),
               child : TextField( //검색창
+                controller: _searchController,
                 decoration: InputDecoration(
                 hintText: "Search",
                 hintStyle: 
@@ -78,8 +108,9 @@ class _MyDiaryPageState extends State<DiaryPage> {
                           borderRadius: BorderRadius.circular(9.0)
                         ),
                         child: 
-                        const TextField( //제목 입력 칸
-                          decoration: InputDecoration(
+                        TextField( //제목 입력 칸
+                          controller: _titleController,
+                          decoration: const InputDecoration(
                             hintText: "Title",
                             hintStyle: TextStyle(color: Colors.grey),
                             border: InputBorder.none,
@@ -139,6 +170,7 @@ class _MyDiaryPageState extends State<DiaryPage> {
                       const SizedBox(height: 10.0),
                       Expanded( child : 
                         TextFormField( //내용 칸
+                          controller: _contentController,
                           maxLines: 17,
                           minLines: null,
                           decoration: const InputDecoration(
