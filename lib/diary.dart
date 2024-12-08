@@ -34,19 +34,22 @@ class _MyDiaryPageState extends State<DiaryPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical:8.0),
           child:
             Container( //검색 창 컨테이너
-              width: 250,
+              width: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white, 
               ),
               child : TextField( //검색창
                 decoration: InputDecoration(
-                hintText: 'Search',
+                hintText: "Search",
+                hintStyle: 
+                  TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
                 prefixIcon: const Icon(Icons.search), 
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 fillColor: Colors.white,
+                contentPadding: EdgeInsets.symmetric(vertical: 2.0)
                 ),
               )
             )
@@ -134,17 +137,19 @@ class _MyDiaryPageState extends State<DiaryPage> {
                         )
                       ),
                       const SizedBox(height: 10.0),
-                      TextFormField( //내용 칸
-                        maxLines: 17,
-                        minLines: null,
-                        decoration: const InputDecoration(
-                          hintText: " Content",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: InputBorder.none,
-                          fillColor: Colors.white,
-                          filled: true,
+                      Expanded( child : 
+                        TextFormField( //내용 칸
+                          maxLines: 17,
+                          minLines: null,
+                          decoration: const InputDecoration(
+                            hintText: " Content",
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: InputBorder.none,
+                            fillColor: Colors.white,
+                            filled: true,
+                          ),
                         ),
-                      ),
+                      )
                       ],   
                   )
                 )
