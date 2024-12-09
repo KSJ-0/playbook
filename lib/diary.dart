@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 
@@ -205,8 +206,10 @@ class _MyDiaryPageState extends State<DiaryPage> {
                           children: [
                             const SizedBox(width:12.0), //버튼 왼쪽 여백
                             Expanded( child: 
-                              TextButton( //버튼
-                                onPressed: () {},
+                              TextButton( //링크 이동 버튼
+                                onPressed: () {
+                                  if(link!=''){launchUrl(Uri.parse(link));}
+                                },
                                 style: TextButton.styleFrom(
                                   backgroundColor: const Color.fromARGB(255, 4, 0, 113),
                                   shape: RoundedRectangleBorder(
