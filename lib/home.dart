@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:playbook/diary.dart';
+import 'package:playbook/diary_read.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -18,6 +19,7 @@ class _MyHomePageState extends State<HomePage> {
   final _teams = ['T1','한화생명','젠지','KT','OK저축은행','농심','BNK','광동','DRX','DK','KIA타이거즈              ','삼성라이온즈','엘지트윈스','엔씨다이노스','KT위즈','한화이글스','SSG랜더스','두산베어스','롯데자이언츠','키움히어로즈'];
   String? _selectedTeam;
   var data;
+  String _diaryId = '';
 
   void initState() {
     super.initState();
@@ -91,7 +93,7 @@ class _MyHomePageState extends State<HomePage> {
             Stack(children: [ //리스트 위에 버튼을 배치하기 위한 스택
               Container( //일기 리스트를 담기 위한 컨테이너
                 height: MediaQuery.of(context).size.height - 400,
-                child:StreamBuilder<QuerySnapshot>( //저장되어 있는 데이터 읽어오기
+                child: StreamBuilder<QuerySnapshot>( //저장되어 있는 데이터 읽어오기
                   stream: FirebaseFirestore.instance.collection('diary').orderBy('createdAt').snapshots(),
                   builder: (context, snapshot) {
                     if(snapshot.data == null) {
@@ -103,6 +105,7 @@ class _MyHomePageState extends State<HomePage> {
                       itemCount: (docs.length <5) ? docs.length : 5, //최대 5개 노출
                       itemBuilder: (context, index) {
                         data = docs[index];
+                        var diaryId = data.id;
                         return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 11.0),
                       child: Column(
@@ -111,8 +114,12 @@ class _MyHomePageState extends State<HomePage> {
                           const Text("   VICTORY🏆", style: TextStyle(fontSize: 17.0),),
                           const SizedBox(height: 5.0),
                           TextButton( //목록
-                            onPressed: () {                  
-                              
+                            onPressed: () {     
+                              _diaryId = data.id;             
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DiaryReadPage(diaryId: diaryId)));
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.white,
