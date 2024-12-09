@@ -15,8 +15,10 @@ class _MyDiaryPageState extends State<DiaryPage> {
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _linkController = TextEditingController();
 
   String docId = '';
+  String link = '';
 
   void initState() {
     super.initState();
@@ -25,11 +27,12 @@ class _MyDiaryPageState extends State<DiaryPage> {
   }
 
   Future<void> uploadData() async {
-    try { //일기 제목, 내용 저장
+    try { //일기 제목, 내용, 첨부 링크 저장
       DocumentReference doc = await FirebaseFirestore.instance.collection('diary').add({
         'title': _titleController.text,
         'content': _contentController.text,
         'createdAt': FieldValue.serverTimestamp(),
+        'link': link,
       });
       docId = doc.id;
     } catch(e) {
@@ -124,7 +127,60 @@ class _MyDiaryPageState extends State<DiaryPage> {
                         color: Colors.white
                       ),
                       child: //링크 첨부 버튼
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.link))
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet<void> (
+                              context : context,
+                              builder : (BuildContext context) {
+                                return Container(
+                                  height: 200,
+                                  child: Column(
+                                    children: [
+                                      TextField(
+                                        controller: _linkController,
+                                        decoration: InputDecoration(
+                                          hintText: "링크를 입력하세요",
+                                          hintStyle: TextStyle(color: Colors.grey),
+                                          border: InputBorder.none,
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12.0,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center, 
+                                        children: [
+                                          const SizedBox(width: 12.0,),
+                                          Container(
+                                            width: 100.0, 
+                                            child :
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor: const Color.fromARGB(255, 4, 0, 113),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(9.0),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                              link = _linkController.text;
+                                              }, 
+                                              child: 
+                                                const Text(
+                                                  "저장",
+                                                  style: TextStyle(color: Colors.white,),)
+                                            )
+                                          ),
+                                          const SizedBox(width: 12.0,),
+                                        ]
+                                      ),
+                                      ] 
+                                  
+                                  )
+                                );
+                              }
+                            );  
+                          },                         
+                          icon: const Icon(Icons.link))
                     )
                   ]
                 ),
