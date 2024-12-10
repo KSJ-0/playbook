@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:playbook/login.dart';
 import 'package:playbook/home.dart';
 import 'package:playbook/diary.dart';
+import 'package:playbook/diary_read.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         "/" : (context) => const Login(),
         "/home" : (context) => const HomePage(title: "home"),
         "/diary" : (context) => const DiaryPage(title: "diary",),
+        "/diary_read" : (context) => DiaryReadPage(diaryId: "diartId",)
       },
     );
   }
