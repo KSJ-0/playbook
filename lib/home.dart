@@ -111,7 +111,10 @@ class _MyHomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [ //승패 여부
-                          const Text("   VICTORY🏆", style: TextStyle(fontSize: 17.0),),
+                          Text(
+                            data['result'] == '승리' ? 'VICTORY🏆' : 'DEFEAT😨',
+                            style: const TextStyle(fontSize: 17.0),
+                          ),
                           const SizedBox(height: 5.0),
                           TextButton( //목록
                             onPressed: () {     
