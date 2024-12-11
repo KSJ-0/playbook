@@ -96,7 +96,7 @@ class _MyDiaryPageState extends State<DiaryPage> {
                   }
                 ),
               ),
-              const SizedBox(width: 0.0,),
+              const SizedBox(width: 10.0,),
               Container( //검색 창 컨테이너
               width: 200,
               decoration: BoxDecoration(
@@ -105,11 +105,11 @@ class _MyDiaryPageState extends State<DiaryPage> {
               ),
               child : 
               Row(children: [            
-                SizedBox(width: 12.0,),
+                const SizedBox(width: 12.0,),
                 Expanded( child : 
                   TextField( //검색창
                   controller: _searchController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                   hintText: "Search",
                   hintStyle: 
                     TextStyle(fontWeight: FontWeight.normal, color: Colors.grey), 
