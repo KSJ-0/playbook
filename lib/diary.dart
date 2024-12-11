@@ -17,13 +17,17 @@ class _MyDiaryPageState extends State<DiaryPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _linkController = TextEditingController();
-
+  
+  final _results = ['승리', '패배'];
   String docId = '';
   String link = '';
+  String? _result; //경기 결과 저장
+  
 
   void initState() {
     super.initState();
     setState(() {
+      _result = '승리';
     });
   }
 
@@ -34,6 +38,7 @@ class _MyDiaryPageState extends State<DiaryPage> {
         'content': _contentController.text,
         'createdAt': FieldValue.serverTimestamp(),
         'link': link,
+        'result': _result,
       });
       docId = doc.id;
     } catch(e) {
@@ -54,7 +59,7 @@ class _MyDiaryPageState extends State<DiaryPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 4, 0, 113),
-        leading : 
+        leading :
           IconButton( //저장 버튼
             onPressed: () {
               uploadData();
@@ -66,27 +71,68 @@ class _MyDiaryPageState extends State<DiaryPage> {
           Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical:8.0),
           child:
-            Container( //검색 창 컨테이너
+            Row(
+              children: [
+                 Container( //검색 창 컨테이너
+                 padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+              width: 70,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.white, 
+              ),
+              child :
+                DropdownButton( //팀 선택 버튼
+                  dropdownColor: Colors.white,
+                  value: _result,
+                  items: _results.map((e) => DropdownMenuItem(
+                    value: e,
+                    child: Text(e),
+                  ))
+                    .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _result = value!;
+                    });
+                  }
+                ),
+              ),
+              const SizedBox(width: 10.0,),
+              Container( //검색 창 컨테이너
               width: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white, 
               ),
-              child : TextField( //검색창
-                controller: _searchController,
-                decoration: InputDecoration(
-                hintText: "Search",
-                hintStyle: 
-                  TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
-                prefixIcon: const Icon(Icons.search), 
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+              child : 
+              Row(children: [            
+                const SizedBox(width: 12.0,),
+                Expanded( child : 
+                  TextField( //검색창
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                  hintText: "Search",
+                  hintStyle: 
+                    TextStyle(fontWeight: FontWeight.normal, color: Colors.grey), 
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(vertical: 2.0)
+                  ),
+                  ),
                 ),
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(vertical: 2.0)
-                ),
+                IconButton( //검색 버튼
+                  onPressed: () {
+                    var searchWord = '';
+                    searchWord = _searchController.text;
+                    if(searchWord!=''){ //searchWord를 유튜브에 검색한 페이지로 이동
+                      launchUrl(Uri.parse("https://www.youtube.com/results?search_query="+searchWord));}
+                  },
+                  icon: const Icon(Icons.search))
+              ]
               )
             )
+              ],
+            )
+            
           )
         ],
       ),

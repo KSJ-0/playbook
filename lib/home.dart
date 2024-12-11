@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<HomePage> {
   //드롭다운 메뉴 옵션
-  final _teams = ['T1','한화생명','젠지','KT','OK저축은행','농심','BNK','광동','DRX','DK','KIA타이거즈              ','삼성라이온즈','엘지트윈스','엔씨다이노스','KT위즈','한화이글스','SSG랜더스','두산베어스','롯데자이언츠','키움히어로즈'];
+  final _teams = ['T1','한화생명','젠지','KT','OK저축은행','농심','BNK','광동','DRX','DK','KIA타이거즈','삼성라이온즈','LG트윈스','NC다이노스','KT위즈','한화이글스','SSG랜더스','두산베어스','롯데자이언츠','키움히어로즈'];
   String? _selectedTeam;
   var data;
   String _diaryId = '';
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<HomePage> {
             Row(
               children: [
                 Image.asset(
-                'assets/t1.jpg',
+                'assets/$_selectedTeam.png',
                 width: MediaQuery.of(context).size.width - 32,
                 height: (MediaQuery.of(context).size.width - 32) * 0.5625
                 ),
@@ -111,7 +111,10 @@ class _MyHomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [ //승패 여부
-                          const Text("   VICTORY🏆", style: TextStyle(fontSize: 17.0),),
+                          Text(
+                            data['result'] == '승리' ? 'VICTORY🏆' : 'DEFEAT😨',
+                            style: const TextStyle(fontSize: 17.0),
+                          ),
                           const SizedBox(height: 5.0),
                           TextButton( //목록
                             onPressed: () {     
