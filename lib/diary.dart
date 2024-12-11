@@ -72,19 +72,31 @@ class _MyDiaryPageState extends State<DiaryPage> {
                 borderRadius: BorderRadius.circular(20.0),
                 color: Colors.white, 
               ),
-              child : TextField( //검색창
-                controller: _searchController,
-                decoration: InputDecoration(
-                hintText: "Search",
-                hintStyle: 
-                  TextStyle(fontWeight: FontWeight.normal, color: Colors.grey),
-                prefixIcon: const Icon(Icons.search), 
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+              child : 
+              Row(children: [
+                SizedBox(width: 12.0,),
+                Expanded( child : 
+                  TextField( //검색창
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                  hintText: "Search",
+                  hintStyle: 
+                    TextStyle(fontWeight: FontWeight.normal, color: Colors.grey), 
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(vertical: 2.0)
+                  ),
+                  ),
                 ),
-                fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(vertical: 2.0)
-                ),
+                IconButton( //검색 버튼
+                  onPressed: () {
+                    var searchWord = '';
+                    searchWord = _searchController.text;
+                    if(searchWord!=''){ //searchWord를 유튜브에 검색한 페이지로 이동
+                      launchUrl(Uri.parse("https://www.youtube.com/results?search_query="+searchWord));}
+                  },
+                  icon: const Icon(Icons.search))
+              ]
               )
             )
           )
